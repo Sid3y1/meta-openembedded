@@ -22,7 +22,7 @@ inherit autotools pkgconfig pythonnative gettext
 SSTATE_SCAN_FILES += "build-defs.h"
 
 # Common EXTRA_OECONF
-COMMON_EXTRA_OECONF = "--enable-sockets --enable-pcntl --enable-shared"
+COMMON_EXTRA_OECONF = "--enable-sockets --enable-pcntl --enable-shared --enable-exif "
 EXTRA_OECONF = "--enable-mbstring \
                 --enable-wddx \
                 --enable-fpm \

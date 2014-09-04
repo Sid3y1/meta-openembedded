@@ -51,6 +51,7 @@ do_configure () {
 	--pid-path=/run/nginx/nginx.pid \
 	--prefix=${prefix} \
 	--with-http_ssl_module \
+	--with-ipv6 \
 	--with-http_gzip_static_module
 }
 
