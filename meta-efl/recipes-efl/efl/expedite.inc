@@ -1,5 +1,5 @@
 DESCRIPTION = "Expedite is a comprehensive benchmarking suite for Evas"
-DEPENDS = "eet evas"
+DEPENDS = "eet evas libsdl"
 LICENSE = "MIT BSD"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d70bc65d46237e4ef386beebe7d0fe5b"
 
@@ -7,24 +7,18 @@ INC_PR = "r0"
 
 inherit e
 
-PACKAGECONFIG ??= ""
-PACKAGECONFIG[sdl] = "--enable-opengl-sdl,--disable-opengl-sdl,libsdl"
-
 EXTRA_OECONF = "\
     --x-includes=${STAGING_INCDIR}/X11 \
     --x-libraries=${STAGING_LIBDIR} \
     --enable-simple-x11 \
 \
-    --disable-opengl-glew \
     --enable-software-x11 \
     --enable-xrender-x11 \
     --enable-software-16-x11 \
     --enable-opengl-x11 \
     --enable-fb \
     --disable-software-ddraw \
-    --disable-software-16-ddraw \
     --disable-direct3d \
-    --disable-software-sdl \
 "
 
 FILES_${PN} += "${datadir}"

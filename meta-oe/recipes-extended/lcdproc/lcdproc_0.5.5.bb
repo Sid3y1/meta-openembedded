@@ -7,6 +7,7 @@ SRC_URI[sha256sum] = "b136b47d7bf585a003334f432d8730a36ef5ed1cd520084b919667d825
 
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[g15] = ",,libg15 g15daemon libg15render,"
+PACKAGECONFIG[hid] = "--enable-libhid,--disable-libhid,libhid"
 
 LCD_DRIVERS_append = "${@base_contains('PACKAGECONFIG', 'g15', '', ',!g15', d)}"
 
@@ -15,7 +16,7 @@ do_install_append () {
     install -D -m 0755 clients/lcdvc/lcdvc ${D}${sbindir}/lcdvc
 
     # configuration files
-    install -D -m 0644 clients/lcdvc/lcdvc.conf ${D}${sysconfdir}/lcdvc.conf
+    install -D -m 0644 ${S}/clients/lcdvc/lcdvc.conf ${D}${sysconfdir}/lcdvc.conf
 }
 
 PACKAGES =+ "lcdvc"

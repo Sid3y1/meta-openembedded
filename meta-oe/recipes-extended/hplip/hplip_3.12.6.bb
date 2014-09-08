@@ -4,15 +4,16 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=442bb3cbbeeb60643a87325718b8a8ee"
 
 PR = "r1"
 
-SRC_URI = "${SOURCEFORGE_MIRROR}/${PN}/${PN}-${PV}.tar.gz \
+SRC_URI = "${SOURCEFORGE_MIRROR}/${BPN}/${BP}.tar.gz \
            file://setup-add-sleep-after-cups-reset.patch \
            file://fix-libusb-paths.patch \
            file://cups-1.6.patch \
+           file://configure.patch \
 "
 
 DEPENDS += "cups python libusb"
 
-inherit autotools python-dir pythonnative
+inherit autotools-brokensep python-dir pythonnative pkgconfig
 
 export BUILD_SYS
 export HOST_SYS

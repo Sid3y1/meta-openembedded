@@ -13,14 +13,24 @@ SRC_URI = "http://www.thekelleys.org.uk/dnsmasq/${@['archive/', ''][float(d.getV
            file://dnsmasq.service \
 "
 
-inherit update-rc.d systemd
+inherit pkgconfig update-rc.d systemd
 
 INITSCRIPT_NAME = "dnsmasq"
 INITSCRIPT_PARAMS = "defaults"
 
-PACKAGECONFIG ??= ""
-PACKAGECONFIG[dbus] = "COPTS=-DHAVE_DBUS,,dbus"
-EXTRA_OEMAKE = "${EXTRA_OECONF}"
+PACKAGECONFIG ?= ""
+PACKAGECONFIG[dbus] = ",,dbus"
+PACKAGECONFIG[idn] = ",,libidn"
+PACKAGECONFIG[conntrack] = ",,libnetfilter-conntrack"
+PACKAGECONFIG[lua] = ",,lua"
+EXTRA_OEMAKE = "\
+    'COPTS=${@base_contains('PACKAGECONFIG', 'dbus', '-DHAVE_DBUS', '', d)} \
+           ${@base_contains('PACKAGECONFIG', 'idn', '-DHAVE_IDN', '', d)} \
+           ${@base_contains('PACKAGECONFIG', 'conntrack', '-DHAVE_CONNTRACK', '', d)} \
+           ${@base_contains('PACKAGECONFIG', 'lua', '-DHAVE_LUASCRIPT', '', d)}' \
+    'CFLAGS=${CFLAGS}' \
+    'LDFLAGS=${LDFLAGS}' \
+"
 
 do_compile_append() {
     # build dhcp_release

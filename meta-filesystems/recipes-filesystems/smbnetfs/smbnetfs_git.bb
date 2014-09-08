@@ -10,13 +10,14 @@ HOMEPAGE ="http://sourceforge.net/projects/smbnetfs"
 
 DEPENDS = "fuse samba"
 
-inherit autotools gitpkgv
+inherit autotools gitpkgv pkgconfig
 
 PKGV = "${GITPKGVTAG}"
 
 SRCREV = "ace1c519d45fe488b9b7e6cc77a2bcadb6c83464"
 
-SRC_URI = "git://smbnetfs.git.sourceforge.net/gitroot/smbnetfs/smbnetfs;branch=master"
+SRC_URI = "git://smbnetfs.git.sourceforge.net/gitroot/smbnetfs/smbnetfs;branch=master \
+           file://configure.patch"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[gnome-keyring] = "--with-gnome-keyring=yes,--with-gnome-keyring=no,libgnome-keyring"

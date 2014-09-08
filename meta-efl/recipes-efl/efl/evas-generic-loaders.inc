@@ -1,6 +1,6 @@
 DESCRIPTION = "Evas generic loaders"
 LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://COPYING;md5=f3877fbaaa46306051a559814451883c"
+LIC_FILES_CHKSUM = "file://COPYING;md5=a87563ed30add2b0e3460272d3138a00"
 DEPENDS = "eina poppler librsvg cairo"
 
 inherit efl
@@ -67,4 +67,5 @@ FILES_evas-generic-pdf-loader-libreoffice += " \
 
 FILES_${PN}-dbg += "${libdir}/evas/utils/.debug"
 
+PACKAGES += "evas-generic-loader-svg"
 PACKAGES_DYNAMIC += "^evas-generic-loader-.* ^evas-generic-pdf-loader-.*"

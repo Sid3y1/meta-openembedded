@@ -21,6 +21,7 @@ SRC_URI = "http://www.rsyslog.com/files/download/rsyslog/${BPN}-${PV}.tar.gz \
            file://initscript \
            file://rsyslog.conf \
            file://rsyslog.logrotate \
+           file://use-pkgconfig-to-check-libgcrypt.patch \
 "
 
 SRC_URI[md5sum] = "ebcc010a6205c28eb505c0fe862f32c6"
@@ -63,14 +64,14 @@ PACKAGECONFIG[gui] = "--enable-gui,--disable-gui,,"
 
 do_install_append() {
     install -d "${D}${sysconfdir}/init.d"
-    install -m 755 ${WORKDIR}/initscript ${D}${sysconfdir}/init.d/rsyslogd
+    install -m 755 ${WORKDIR}/initscript ${D}${sysconfdir}/init.d/syslog.${BPN}
     install -m 644 ${WORKDIR}/rsyslog.conf ${D}${sysconfdir}/rsyslog.conf
     install -m 644 ${WORKDIR}/rsyslog.logrotate ${D}${sysconfdir}/logrotate.rsyslog
 }
 
 FILES_${PN} += "${bindir}"
 
-INITSCRIPT_NAME = "rsyslogd"
+INITSCRIPT_NAME = "syslog"
 INITSCRIPT_PARAMS = "defaults"
 
 # higher than sysklogd's 100
@@ -100,6 +101,5 @@ python () {
         pn = d.getVar('PN', True)
         sysconfdir = d.getVar('sysconfdir', True)
         d.appendVar('ALTERNATIVE_%s' % (pn), ' syslog-init')
-        d.setVarFlag('ALTERNATIVE_LINK_NAME', 'syslog-init', '%s/init.d/syslogd' % (sysconfdir))
-        d.setVarFlag('ALTERNATIVE_TARGET', 'syslog-init', '%s/init.d/rsyslogd' % (sysconfdir))
+        d.setVarFlag('ALTERNATIVE_LINK_NAME', 'syslog-init', '%s/init.d/syslog' % (sysconfdir))
 }

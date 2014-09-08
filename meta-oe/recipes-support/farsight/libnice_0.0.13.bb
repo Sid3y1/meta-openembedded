@@ -16,12 +16,16 @@ DEPENDS = "glib-2.0 gstreamer"
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[gupnp] = "--enable-gupnp,--disable-gupnp,gupnp-igd"
 
-inherit autotools
+inherit autotools pkgconfig gtk-doc
 
 FILES_${PN} += "${libdir}/gstreamer-0.10/*.so"
 FILES_${PN}-dev += "${libdir}/gstreamer-0.10/*.la"
 FILES_${PN}-staticdev += "${libdir}/gstreamer-0.10/*.a"
 FILES_${PN}-dbg += "${libdir}/gstreamer-0.10/.debug"
+
+do_configure_prepend() {
+    mkdir ${S}/m4 || true
+}
 
 do_compile_append() {
     for i in $(find ${S} -name "*.pc") ; do

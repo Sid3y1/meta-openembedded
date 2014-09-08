@@ -15,15 +15,13 @@ SRC_URI = "${SOURCEFORGE_MIRROR}/owfs/owfs-${PV}.tar.gz \
 SRC_URI[md5sum] = "56ba145be208002e58775a7203369851"
 SRC_URI[sha256sum] = "9d22dbff72d235476688c02669f7171b23e21dffadf40bbdd3b8263908218424"
 
-inherit autotools update-rc.d
+inherit autotools-brokensep update-rc.d
 
 EXTRA_OECONF = " \
                  --with-fuseinclude=${STAGING_INCDIR} \
                  --with-fuselib=${STAGING_LIBDIR} \
                  --enable-owfs \
                  --enable-owhttpd \
-                 --enable-cache \
-                 --enable-mt \
                  --enable-w1 \
                  --disable-swig \
                  --disable-owtcl \

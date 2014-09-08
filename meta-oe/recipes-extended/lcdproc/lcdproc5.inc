@@ -9,7 +9,7 @@ DEPENDS = "ncurses"
 LIC_FILES_CHKSUM = "file://COPYING;md5=18810669f13b87348459e611d31ab760 \
                     file://README;beginline=60;md5=637e042cdd3671ba00e78b58ede45d3b"
 
-SRC_URI = "${SOURCEFORGE_MIRROR}/lcdproc/${P}.tar.gz"
+SRC_URI = "${SOURCEFORGE_MIRROR}/lcdproc/${BP}.tar.gz"
 
 inherit autotools update-rc.d
 
@@ -36,10 +36,10 @@ do_install () {
     sed -i s'/--oknodo//' ${D}${sysconfdir}/init.d/lcdproc
 
     # configuration files
-    install -m 0644 LCDd.conf ${D}${sysconfdir}/LCDd.conf
+    install -m 0644 ${S}/LCDd.conf ${D}${sysconfdir}/LCDd.conf
     sed -i 's!^DriverPath=.*!DriverPath=${libdir}/lcdproc/!' ${D}${sysconfdir}/LCDd.conf
     sed -i 's!^Driver=.*!Driver=${LCD_DEFAULT_DRIVER}!' ${D}${sysconfdir}/LCDd.conf
-    install -m 0644 clients/lcdproc/lcdproc.conf ${D}${sysconfdir}/lcdproc.conf
+    install -m 0644 ${S}/clients/lcdproc/lcdproc.conf ${D}${sysconfdir}/lcdproc.conf
 
     # driver library files
     install -d ${D}${libdir}/lcdproc

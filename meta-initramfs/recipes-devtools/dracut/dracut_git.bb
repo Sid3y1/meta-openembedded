@@ -5,10 +5,10 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 PE = "1"
-PV = "036"
+PV = "038"
 
-# v036 tag
-SRCREV = "d50a99c5ceeb7107f624c5d3238d37509b2217a8"
+# v038 tag
+SRCREV = "267a109a81715c8957f14659593deb7b6255d40e"
 SRC_URI = "git://git.kernel.org/pub/scm/boot/dracut/dracut.git"
 
 S = "${WORKDIR}/git"
@@ -33,7 +33,8 @@ FILES_${PN} += "${datadir}/bash-completion \
                 ${libdir}/kernel \
                "
 
-RDEPENDS_${PN} = "systemd findutils cpio util-linux-blkid bash ldd"
+# 'getopt' is in the util-linux main package
+RDEPENDS_${PN} = "systemd findutils cpio util-linux-blkid util-linux bash ldd"
 # This could be optimized a bit, but let's avoid non-booting systems :)
 RRECOMMENDS_${PN} = " \
                      kernel-modules \

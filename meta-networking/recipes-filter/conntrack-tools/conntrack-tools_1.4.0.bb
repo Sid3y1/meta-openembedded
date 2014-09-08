@@ -2,7 +2,7 @@ SUMMARY = "Connection tracking userspace tools for Linux"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=8ca43cbc842c2336e835926c2166c28b"
 DEPENDS = "libnfnetlink libnetfilter-conntrack libnetfilter-cttimeout \
-           libnetfilter-cthelper libnetfilter-queue"
+           libnetfilter-cthelper libnetfilter-queue bison-native"
 
 
 SRC_URI = " \
@@ -13,7 +13,7 @@ SRC_URI = " \
 SRC_URI[tar.md5sum] = "ee737c774e01349f75e935228a2d851b"
 SRC_URI[tar.sha256sum] = "036b032a5c4d180aad686df21399d74506b9b3d3000794eb13ac313482e24896"
 
-inherit autotools update-rc.d
+inherit autotools-brokensep update-rc.d pkgconfig
 
 INITSCRIPT_NAME = "conntrackd"
 

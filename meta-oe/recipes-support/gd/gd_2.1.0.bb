@@ -10,7 +10,7 @@ HOMEPAGE = "http://libgd.bitbucket.org/"
 SECTION = "libs"
 LICENSE = "GD"
 LIC_FILES_CHKSUM = "file://COPYING;md5=c97638cafd3581eb87abd37332137669"
-DEPENDS = "freetype libpng jpeg zlib"
+DEPENDS = "freetype libpng jpeg zlib tiff libvpx"
 
 SRC_URI = "https://bitbucket.org/libgd/gd-libgd/downloads/libgd-${PV}.tar.bz2 \
            file://fix-the-subdir-objects-error.patch \
@@ -20,7 +20,7 @@ SRC_URI[sha256sum] = "f3e1bc472bd81ee976a739436659fe752a14727a964c64530fde68531d
 
 S = "${WORKDIR}/libgd-${PV}"
 
-inherit autotools binconfig gettext
+inherit autotools binconfig gettext pkgconfig
 
 EXTRA_OECONF += " --disable-rpath \
                   --with-jpeg=${STAGING_LIBDIR}/.. \

@@ -19,10 +19,12 @@ PROVIDES += "ecore edje eet eeze efreet eina eio embryo emotion ethumb evas eldb
 # your own in terms of ensuring everything works if you do this
 EXTRA_OECONF = " \
     --disable-physics \
-    --enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aaa \
+    --enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aba \
 "
 EXTRA_OECONF_append_class-target = " \
-    --with-bin-edje-cc=${STAGING_BINDIR_NATIVE}/edje_cc \
+    --with-edje-cc=${STAGING_BINDIR_NATIVE}/edje_cc \
+    --with-eolian-gen=${STAGING_BINDIR_NATIVE}/eolian_gen \
+    --with-eolian-cxx=${STAGING_BINDIR_NATIVE}/eolian_cxx \
 "
 EXTRA_OECONF_append_class-native = " \
     --disable-fontconfig \
@@ -42,32 +44,32 @@ EXTRA_OECONF_append_class-native = " \
     --disable-image-loader-xpm \
 "
 
-PACKAGECONFIG ?= "opengl-es gstreamer1 pulseaudio lua-old"
-PACKAGECONFIG_class-native = "lua-old"
+PACKAGECONFIG ?= "opengl-es gstreamer1 pulseaudio luajit"
+PACKAGECONFIG_class-native = "luajit"
 
 # sort of tri-state
 PACKAGECONFIG[opengl-full] = "--with-opengl=full,,virtual/libgl"
 PACKAGECONFIG[opengl-es] = "--with-opengl=es,,virtual/libgles2"
 PACKAGECONFIG[opengl-none] = "--with-opengl=none,,"
+# be aware when enabling this for efl-native, we don't provide gcc-native so you need to make
+# sure that all your builders have g++ which supports -std=gnu++11
+PACKAGECONFIG[c++11] = "--enable-cxx-bindings,--disable-cxx-bindings"
 PACKAGECONFIG[gstreamer] = "--enable-gstreamer,--disable-gstreamer,gstreamer"
 PACKAGECONFIG[gstreamer1] = "--enable-gstreamer1,--disable-gstreamer1,gstreamer1.0 gstreamer1.0-plugins-base"
 PACKAGECONFIG[pulseaudio] = "--enable-pulseaudio,--disable-pulseaudio,pulseaudio"
 PACKAGECONFIG[systemd] = "--enable-systemd,--disable-systemd,systemd"
-# we don't have luajit-native now, so use old lua for -native and
-# for target it's also currently failing with luajit
-# | /OE/build/shr-core/tmp-eglibc/sysroots/x86_64-linux/usr/libexec/core2-64-oe-linux/gcc/x86_64-oe-linux/4.8.2/ld: /OE/build/shr-core/tmp-eglibc/sysroots/qemux86-64/usr/lib/libluajit-5.1.a(lj_err.o): relocation R_X86_64_32S against `.rodata' can not be used when making a shared object; recompile with -fPIC
-# | /OE/build/shr-core/tmp-eglibc/sysroots/qemux86-64/usr/lib/libluajit-5.1.a: error adding symbols: Bad value
-# | collect2: error: ld returned 1 exit status
-# | Makefile:12007: recipe for target 'lib/edje/libedje.la' failed
 PACKAGECONFIG[luajit] = "--disable-lua-old,--enable-lua-old,luajit"
-PACKAGECONFIG[lua-old] = "--enable-lua-old,--disable-lua-old,lua5.1"
+PACKAGECONFIG[lua-old] = "--enable-lua-old,--disable-lua-old,lua"
+PACKAGECONFIG[avahi] = "--enable-avahi,--disable-avahi,avahi"
+# currently we don't provide doxygen-native
+PACKAGECONFIG[doc] = "--enable-doc,--disable-doc,doxygen-native"
 
 # new efl doesn't have option to disable eeze build and we don't want to provide udev-native just to build eeze-native we don't need
 do_configure_prepend_class-native() {
     sed -i 's/EFL_LIB_START_OPTIONAL(\[Eeze\], \[test "${have_linux}" = "yes"\])/EFL_LIB_START_OPTIONAL([Eeze], [test "${no-we-really-dont-want-native-eeze}" = "yes"])/g' ${S}/configure.ac
 }
 
-PACKAGES =+ "edje-utils embryo-utils embryo-tests efreet-trash efreet-mime libeet libefreet ecore-audio ecore-input-evas ecore-input ecore-imf-evas ecore-imf ecore-file ecore-con ecore-ipc ecore-x ecore-evas libemotion eo ecore edje eet eeze efreet eina eio embryo emotion ethumb evas eldbus"
+PACKAGES =+ "edje-utils embryo-utils embryo-tests efreet-trash efreet-mime libeet libefreet ecore-audio ecore-input-evas ecore-input ecore-imf-evas ecore-imf ecore-file ecore-con ecore-ipc ecore-x ecore-evas libemotion eo ecore edje eet eeze efreet eina eio embryo emotion ethumb evas eldbus elua"
 
 # upgrade path from 1.7
 DEBIAN_NOAUTONAME_ecore-audio = "1"
@@ -105,6 +107,7 @@ python populate_packages_prepend () {
         allow_dirs=True, recursive=False, extra_depends="" )
 }
 
+PACKAGES += "evas-loader-png evas-engine-software-generic evas-engine-fb"
 PACKAGES_DYNAMIC += "^evas-engine-.* ^evas-loader-.* ^evas-saver-.* ^evas-cserve2-.*"
 
 # PACKAGES_DYNAMIC + do_split_packages isn't used for all libe libs,
@@ -153,6 +156,7 @@ FILES_ecore-ipc = "\
 "
 FILES_ecore-x = "\
     ${libdir}/libecore_x${SOLIBS} \
+    ${libdir}/ecore_x/bin/v-*/ecore_x_vsync \
 "
 FILES_ecore-evas = "\
     ${libdir}/libecore_evas${SOLIBS} \
@@ -186,6 +190,7 @@ FILES_efreet = " \
 "
 FILES_eet = " \
     ${bindir}/eet \
+    ${bindir}/vieet \
     ${libdir}/libeet${SOLIBS} \
 "
 FILES_emotion = " \
@@ -240,9 +245,14 @@ FILES_edje = " \
     ${datadir}/edje \
     ${datadir}/mime \
 "
+FILES_elua = " \
+    ${bindir}/elua \
+    ${datadir}/elua \
+"
 FILES_${PN}-dbg += " \
     ${libdir}/efreet/*/.debug \
     ${libdir}/ecore*/*/*/*/.debug \
+    ${libdir}/ecore*/*/*/.debug \
     ${libdir}/evas*/*/*/*/*/.debug \
     ${libdir}/evas/cserve2/bin/*/.debug \
     ${libdir}/eeze*/*/*/*/*/.debug \

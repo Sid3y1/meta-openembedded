@@ -5,11 +5,9 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=4d92cd373abda3937c2bc47fbc49d
 
 PR = "r10"
 
-inherit packagegroup
+PNBLACKLIST[packagegroup-xfce-extended] = "BROKEN: rdepends on broken xfce4-power-manager -> networkmanager"
 
-RPROVIDES_${PN} += "task-xfce-extended"
-RREPLACES_${PN} += "task-xfce-extended"
-RCONFLICTS_${PN} += "task-xfce-extended"
+inherit packagegroup
 
 # mandatory
 RDEPENDS_${PN} = " \

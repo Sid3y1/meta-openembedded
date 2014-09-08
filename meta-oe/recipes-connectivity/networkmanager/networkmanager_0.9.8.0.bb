@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=cbbffd568227ada506640fe950a4823b"
 
 DEPENDS = "libnl dbus dbus-glib udev wireless-tools gnutls util-linux ppp"
 
+PNBLACKLIST[networkmanager] = "BROKEN: needs to detect gcrypt from pkg-config (error: gnutls explicitly requested but gcrypt not found on system)"
+
 inherit gnome gettext systemd
 
 SRC_URI = " \
@@ -56,6 +58,7 @@ do_install_append () {
     # Additional test binaries
     install -d ${D}${bindir}
     #install -m 0755 ${S}/test/.libs/libnm* ${D}${bindir}
+    install -m 0755 ${B}/test/.libs/libnm* ${D}${bindir}
 
     # Install an empty VPN folder as nm-connection-editor will happily segfault without it :o.
     # With or without VPN support built in ;).

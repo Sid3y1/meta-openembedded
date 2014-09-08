@@ -13,7 +13,7 @@ LIC_FILES_CHKSUM = "\
     file://examples/albums.c;beginline=5;endline=21;md5=84f4e55dfec49e898b7f68a828c15620 \
 "
 
-DEPENDS += "libusb1"
+DEPENDS += "libusb1 gettext-native"
 
 SCM_URI = "git://git.code.sf.net/p/libmtp/code"
 SRC_URI = "\
@@ -29,8 +29,8 @@ do_unpack[vardeps] += "skip_udev_rules_generation"
 do_unpack[postfuncs] += "skip_udev_rules_generation"
 
 skip_udev_rules_generation () {
-	sed -i -e '/^noinst_DATA=/,/util\/mtp-hotplug -H/d' Makefile.am
-	cp ${WORKDIR}/69-libmtp.rules ${S}/
+    sed -i -e '/^noinst_DATA=/,/util\/mtp-hotplug -H/d' ${S}/Makefile.am
+    cp ${WORKDIR}/69-libmtp.rules ${S}/
 }
 
 inherit autotools pkgconfig lib_package

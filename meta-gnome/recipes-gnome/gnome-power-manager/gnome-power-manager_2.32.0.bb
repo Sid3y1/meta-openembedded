@@ -21,18 +21,16 @@ EXTRA_OECONF = " --disable-scrollkeeper \
                  --disable-applets \
                  --x-includes=${STAGING_INCDIR} \
                  --x-libraries=${STAGING_LIBDIR} \
-                 --with-dpms-ext=${STAGING_INCDIR}/.. \
                  --enable-compile-warnings=no \
                  ac_cv_header_X11_extensions_dpms_h=yes \
 "
 
 do_configure_append() {
-    rm config.log
     # Sigh... --enable-compile-warnings=no doesn't actually turn off -Werror
-    for i in $(find ${S} -name "Makefile") ; do
+    for i in $(find ${B} -name "Makefile") ; do
         sed -i -e s:-Werror::g $i
     done
-    sed -e "s/libtool --/${TARGET_SYS}-libtool --/" -i ${S}/src/Makefile
+    sed -e "s/libtool --/${TARGET_SYS}-libtool --/" -i ${B}/src/Makefile
 }
 
 PACKAGES =+ "${PN}-applets"

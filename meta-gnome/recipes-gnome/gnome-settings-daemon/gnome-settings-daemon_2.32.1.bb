@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=59530bdf33659b29e73d4adb9f9f6552"
 
 PR = "r7"
 
-DEPENDS = "libxxf86misc libsndfile1 libxtst glib-2.0 polkit gtk+ gconf dbus-glib libnotify libgnomekbd libxklavier gnome-doc-utils gnome-desktop"
+DEPENDS = "intltool libxxf86misc libsndfile1 libxtst glib-2.0 polkit gtk+ gconf dbus-glib libnotify libgnomekbd libxklavier gnome-doc-utils gnome-desktop"
 
 inherit gnome
 
@@ -16,14 +16,14 @@ S = "${WORKDIR}/git"
 PACKAGECONFIG ??= "${@base_contains('DISTRO_FEATURES', 'pulseaudio', 'pulseaudio', '', d)"
 PACKAGECONFIG[pulseaudio] = "--enable-pulse,--disable-pulse,pulseaudio glib-2.0 libcanberra"
 
-EXTRA_OECONF = "--disable-esd \
-                --x-includes=${STAGING_INCDIR} \
-                --x-libraries=${STAGING_LIBDIR} \
-                --enable-polkit \
+EXTRA_OECONF = " \
+    --x-includes=${STAGING_INCDIR} \
+    --x-libraries=${STAGING_LIBDIR} \
+    --enable-polkit \
 "
 
 do_configure_prepend() {
-    sed -i -e 's:-L$libdir::g' -e 's:-I$includedir::g' configure.ac
+    sed -i -e 's:-L$libdir::g' -e 's:-I$includedir::g' ${S}/configure.ac
 }
 
 FILES_${PN} += "${libdir}/gnome-settings-daemon-2.0/*.so ${libdir}/gnome-settings-daemon-2.0/*plugin \

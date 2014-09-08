@@ -6,13 +6,14 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=a981379bd0f1c362f8d1d21515e5b30b"
 
 SRC_URI = "http://dovecot.org/releases/2.2/dovecot-${PV}.tar.gz \
            file://0001-configure.ac-convert-AC_TRY_RUN-to-AC_TRY_LINK-state.patch \
+           file://building-rquota_xdr.c-depend-on-rquota.h.patch \
           "
 SRC_URI[md5sum] = "037e9c9e07d9dbff54dcff09f280fc8c"
 SRC_URI[sha256sum] = "75592483d40dc4f76cc3b41af40caa4be80478946a699d46846d5d03e4d2e09b"
 
 DEPENDS = "openssl xz zlib bzip2 libcap"
 
-inherit autotools
+inherit autotools pkgconfig
 
 PACKAGECONFIG ??= " \
                    ${@base_contains('DISTRO_FEATURES', 'ldap', 'ldap', '', d)} \

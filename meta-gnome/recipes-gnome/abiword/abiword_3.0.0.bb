@@ -24,7 +24,7 @@ SHRT_VER = "${@d.getVar('PV',1).split('.')[0]}.${@d.getVar('PV',1).split('.')[1]
 
 inherit autotools-brokensep pkgconfig
 
-PACKAGECONFIG ??= "collab-backend-xmpp collab-backend-tcp collab-backend-service"
+PACKAGECONFIG ??= "collab-backend-xmpp collab-backend-tcp"
 PACKAGECONFIG[spell] = "--enable-spell,--disable-spell,enchant"
 PACKAGECONFIG[collab-backend-xmpp] = "--enable-collab-backend-xmpp,--disable-collab-backend-xmpp,libgsf libxml2 loudmouth"
 PACKAGECONFIG[collab-backend-tcp] = "--enable-collab-backend-tcp,--disable-collab-backend-tcp,libgsf libxml2"
